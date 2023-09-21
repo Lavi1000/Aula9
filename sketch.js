@@ -1,53 +1,47 @@
-var trex, trex_running, edges, ground;
-var groundImage;
+var sea,ship;
+var seaImg,shipImg1;
 
+function preload(){
+  // Descomente o código para adicionar animação ao navio
 
-function preload() {
-  trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
-  groundImage = loadImage("ground2.png")
+  shipImg1 = loadAnimation("ship-1.png");
+  //shipImg1 = loadAnimation("ship-1.png");
+  //shipImg1 = loadAnimation("ship-1");
+  shipImg1 = loadAnimation("ship-1.png","ship-2.png","ship-1.png","ship-2.png");
+  //shipImg1 = loadAnimation("ship-1","ship-2","ship-1","ship-2");
+  
+  seaImg = loadImage("sea.png");
 }
 
-function setup() {
-  createCanvas(600, 200);
+function setup(){
+  createCanvas(400,400);
+  background("blue");
 
-  //criando o trex
-  trex = createSprite(50, 160, 20, 50);
-  trex.addAnimation("running", trex_running);
-  edges = createEdgeSprites();
+  // Movendo o fundo
+  sea=createSprite(400,200);
+  sea.addImage(seaImg);
+  sea.velocityX = -5;
+  sea.scale=0.3;
 
-  //adicione dimensão e posição ao trex
-  trex.scale = 0.5;
-  trex.x = 50
-
-  ground = createSprite(200, 180, 400, 20);
-  ground.addImage("ground", groundImage);
-  //ground.x=ground.witth/2;
+  
+  ship = createSprite(130,200,30,30);
+  ship.addAnimation("movingShip",shipImg1);
+  ship.scale =0.25;
+  
 }
-
 
 function draw() {
-  //definir a cor do plano de fundo 
-  background("white");
+  background(0);
+  sea.velocityX = -3;
 
-  ground.velocityX = -2;
-  console.log(ground.x);
-
-  //registrando a posição y do trex
-  console.log(trex.y)
-
-  if (ground.x < 0) {
-    //ground.x = ground.witth / 2;
+  // Descomente o código para redefinir o fundo
+  if(sea.x < 0){
+    //sea.x = 0;
+    //sea.x = sea.width;
+    sea.x = sea.width/8;
+    //sea.y = height;
   }
-  //pular quando tecla de espaço for pressionada
-  if (keyDown("space")) {
-    trex.velocityY = -10;
-  }
-
-  trex.velocityY = trex.velocityY + 0.5;
-
-  //impedir que o trex caia
-  trex.collide(ground);
-  drawSprites();
 
  
+  drawSprites();
 }
