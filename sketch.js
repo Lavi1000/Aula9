@@ -4,59 +4,34 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 
-let world;
-let engine;
-var ground;
-var block1;
-var block2;
-var ball;
+var ball, ground, engine, world;
+var groundObj, leftSize, rightSize;
 
 
-//function preload() {
+function preload() {
 
-//}
+}
 
 function setup() {
-	
-	createCanvas(400, 400);
+	createCanvas(1000,1000);
 	engine = Engine.create();
 	world = engine.world;
 
-	//Crie os Corpos Aqui.
-	var ground_options = {
-		isStatic: true
-	}
-
+	//Create the Bodies Here.
 	var ball_options = {
-		restitution: 0.5,
-		friction: 0.02,
-		frictionAir: 0
-
-	}
-	var block1_options = {
-		restitution: 0.7,
-		friction: 0.01,
-		frictionAir: 0.80
-
+		isStatic: false,
+		restitution: 0.3,
+		friction: 0,
+		density: 1.2
 	}
 
-	var block2_options = {
-		restitution: 0.01,
-		friction: 1,
-		frictionAir: 0.3
-	}
-
-	ground = Bodies.rectangle(200, 390, 400, 20, ground_options);
-	World.add(world, ground);
-
-	ball = Bodies.circle(220, 10, 10, ball_options);
+	ball = Bodies.circle(200, 50, 20, ball_options);
 	World.add(world, ball);
 
-	block1 = Bodies.rectangle(110, 50, 10, 10, block1_options);
-	World.add(world, block1);
+	groundObj = new Ground(width / 2, 670, width, 20);
+	leftSize = new Ground(1100, 600, 20, 120);
+	rightSize = new Ground(1200, 700, 20, 120);
 
-	block2 = Bodies.rectangle(350, 50, 10, 10, block2_options);
-	World.add(world, block2);
 
 	rectMode(CENTER);
 	ellipseMode(RADIUS);
@@ -68,14 +43,19 @@ function setup() {
 function draw() {
 	background(51);
 	drawSprites();
+	ellipse(ball.position.x, ball.position.y, 20);
+
+	groundObj.display();
+	leftSize.display();
+	rightSize.display();
+
+
 	Engine.update(engine);
-	
-
-
-	ellipse(ball.position.x, ball.position.y, 10);
-	rect(block1.position.x, block1.position.y, 10);
-	rect(block2.position.x, block2.position.y, 10);
-	rect(ground.position.x, ground.position.y, 400, 20);
 }
 
+function keyPressed() {
+	if (keyCode === UP_ARROW) {
+		Matter.Body.applyForce(ball, { x: 0, y: 0 }, { x: 0.05, y: 0 });
+	}
+}
 
